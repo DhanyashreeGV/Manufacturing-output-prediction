@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Equipment Output Prediction System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-input: #1e293b;
+            --accent-primary: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.25);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.12) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-primary);
+            background: rgba(56, 189, 248, 0.1);
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.65rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .btn-submit {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: #fff;
+            border: none;
+            padding: 0.9rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+
+        .result-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+        }
+
+        .prediction-value {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--success);
+            margin: 1rem 0;
+            text-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+        }
+
+        .prediction-unit {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .metric-title {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .figures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .figure-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .figure-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .error-message {
+            background: rgba(248, 113, 113, 0.15);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Manufacturing Equipment Output Prediction</h1>
+            <p>End-to-End Predictive Telemetry System & Analytics Dashboard</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('predict-tab')">Real-Time Prediction</button>
+            <button class="tab-btn" onclick="switchTab('metrics-tab')">Model Performance Metrics</button>
+            <button class="tab-btn" onclick="switchTab('figures-tab')">Evaluation Charts</button>
+        </div>
+
+        <!-- Predict Tab -->
+        <div id="predict-tab" class="tab-content active">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">⚙️ Equipment Input Parameters</div>
+                    <form id="prediction-form">
+                        <div class="form-grid">
+                            <!-- Numerical Features -->
+                            <div class="form-group">
+                                <label for="Injection_Temperature">Injection Temp (°C)</label>
+                                <input type="number" step="any" id="Injection_Temperature" class="form-control" value="221.0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Injection_Pressure">Injection Pressure (bar)</label>
+                                <input type="number" step="any" id="Injection_Pressure" class="form-control" value="136.0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Cycle_Time">Cycle Time (s)</label>
+                                <input type="number" step="any" id="Cycle_Time" class="form-control" value="28.7" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Cooling_Time">Cooling Time (s)</label>
+                                <input type="number" step="any" id="Cooling_Time" class="form-control" value="13.6" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Material_Viscosity">Material Viscosity</label>
+                                <input type="number" step="any" id="Material_Viscosity" class="form-control" value="375.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Ambient_Temperature">Ambient Temp (°C)</label>
+                                <input type="number" step="any" id="Ambient_Temperature" class="form-control" value="28.0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Machine_Age">Machine Age (yrs)</label>
+                                <input type="number" step="any" id="Machine_Age" class="form-control" value="3.8" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Operator_Experience">Operator Experience (yrs)</label>
+                                <input type="number" step="any" id="Operator_Experience" class="form-control" value="11.2" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Maintenance_Hours">Maintenance Hours</label>
+                                <input type="number" step="any" id="Maintenance_Hours" class="form-control" value="64.0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Temperature_Pressure_Ratio">Temp/Pressure Ratio</label>
+                                <input type="number" step="any" id="Temperature_Pressure_Ratio" class="form-control" value="1.625" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Total_Cycle_Time">Total Cycle Time (s)</label>
+                                <input type="number" step="any" id="Total_Cycle_Time" class="form-control" value="42.3" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Efficiency_Score">Efficiency Score</label>
+                                <input type="number" step="any" id="Efficiency_Score" class="form-control" value="0.063" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Machine_Utilization">Machine Utilization</label>
+                                <input type="number" step="any" id="Machine_Utilization" class="form-control" value="0.510" required>
+                            </div>
+
+                            <!-- Categorical Features -->
+                            <div class="form-group">
+                                <label for="Shift">Shift</label>
+                                <select id="Shift" class="form-control">
+                                    <option value="Day">Day</option>
+                                    <option value="Evening" selected>Evening</option>
+                                    <option value="Night">Night</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Machine_Type">Machine Type</label>
+                                <select id="Machine_Type" class="form-control">
+                                    <option value="Type_A">Type A</option>
+                                    <option value="Type_B" selected>Type B</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Material_Grade">Material Grade</label>
+                                <select id="Material_Grade" class="form-control">
+                                    <option value="Economy" selected>Economy</option>
+                                    <option value="Standard">Standard</option>
+                                    <option value="Premium">Premium</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Day_of_Week">Day of Week</label>
+                                <select id="Day_of_Week" class="form-control">
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday" selected>Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-submit">Calculate Predicted Parts Per Hour</button>
+                        </div>
+                    </form>
+                    <div id="error-box" class="error-message"></div>
+                </div>
+
+                <div class="card result-box">
+                    <div class="card-title">📈 Prediction Output</div>
+                    <div id="prediction-display">
+                        <div class="prediction-value" id="prediction-number">--</div>
+                        <div class="prediction-unit">Parts_Per_Hour</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Tab -->
+        <div id="metrics-tab" class="tab-content">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-title">R² Score (Coefficient of Determination)</div>
+                    <div class="metric-value">0.9057</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Mean Absolute Error (MAE)</div>
+                    <div class="metric-value">2.717</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Root Mean Squared Error (RMSE)</div>
+                    <div class="metric-value">3.508</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Model Algorithm</div>
+                    <div class="metric-value" style="font-size: 1.4rem; padding-top: 0.4rem;">Linear Regression</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📋 Model Specification Metadata</div>
+                <p style="color: var(--text-muted); line-height: 1.6;">
+                    <strong>Target Variable:</strong> Parts_Per_Hour<br>
+                    <strong>Dataset Samples:</strong> 1,000 total (800 Training / 200 Test Split)<br>
+                    <strong>Features Processed:</strong> 29 features post One-Hot Encoding and Standard Scaling<br>
+                    <strong>Numerical Imputer:</strong> Median Imputation & Standard Scaler<br>
+                    <strong>Categorical Imputer:</strong> Most Frequent & OneHotEncoder (handle_unknown='ignore')
+                </p>
+            </div>
+        </div>
+
+        <!-- Figures Tab -->
+        <div id="figures-tab" class="tab-content">
+            <div class="figures-grid">
+                <div class="figure-card">
+                    <div class="card-title" style="font-size: 1rem;">Actual vs Predicted</div>
+                    <img src="/static/figures/actual_vs_predicted_linear_regression.png" alt="Actual vs Predicted">
+                </div>
+                <div class="figure-card">
+                    <div class="card-title" style="font-size: 1rem;">Residuals vs Predicted</div>
+                    <img src="/static/figures/residuals_vs_predicted_linear_regression.png" alt="Residuals vs Predicted">
+                </div>
+                <div class="figure-card">
+                    <div class="card-title" style="font-size: 1rem;">Residual Distribution</div>
+                    <img src="/static/figures/residual_distribution_linear_regression.png" alt="Residual Distribution">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const errorBox = document.getElementById('error-box');
+            errorBox.style.display = 'none';
+
+            const numericalFields = [
+                "Injection_Temperature", "Injection_Pressure", "Cycle_Time", 
+                "Cooling_Time", "Material_Viscosity", "Ambient_Temperature", 
+                "Machine_Age", "Operator_Experience", "Maintenance_Hours", 
+                "Temperature_Pressure_Ratio", "Total_Cycle_Time", 
+                "Efficiency_Score", "Machine_Utilization"
+            ];
+
+            const categoricalFields = ["Shift", "Machine_Type", "Material_Grade", "Day_of_Week"];
+
+            const payload = {};
+            numericalFields.forEach(field => {
+                payload[field] = parseFloat(document.getElementById(field).value);
+            });
+
+            categoricalFields.forEach(field => {
+                payload[field] = document.getElementById(field).value;
+            });
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Prediction request failed');
+                }
+
+                document.getElementById('prediction-number').innerText = data.prediction.toFixed(2);
+            } catch (err) {
+                errorBox.innerText = 'Error: ' + err.message;
+                errorBox.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
