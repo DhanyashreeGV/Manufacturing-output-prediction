@@ -1,0 +1,35 @@
+M3 MODEL DEVELOPMENT & EVALUATION SUMMARY
+
+Dataset
+- 1,000 rows
+- Target: Parts_Per_Hour
+- Training: 800 rows
+- Test: 200 rows
+- Processed features: 29
+
+Primary model
+- Linear Regression
+
+Test metrics
+- MAE: 2.717164
+- MSE: 12.304518
+- RMSE: 3.507780
+- R²: 0.905707
+
+Optional benchmarks
+- Ridge: MAE 2.721872, MSE 12.308771, RMSE 3.508386, R² 0.905675
+- Lasso: MAE 2.723792, MSE 12.245664, RMSE 3.499381, R² 0.906158
+
+Artifacts for M4
+- results/model_artifacts/linear_regression_pipeline.joblib
+- results/model_artifacts/preprocessor.joblib
+- results/model_artifacts/linear_regression_model.joblib
+- results/model_artifacts/model_metadata.json
+
+Figures
+- results/figures/actual_vs_predicted_linear_regression.png
+- results/figures/residuals_vs_predicted_linear_regression.png
+- results/figures/residual_distribution_linear_regression.png
+
+Note
+M2 identified outliers, but the current M1 preprocessing code does not remove/cap them. M3 kept the upstream preprocessing unchanged.
