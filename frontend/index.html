@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MFG.AI — Manufacturing Output Intelligence</title>
+  <meta name="description" content="AI/ML powered manufacturing equipment throughput intelligence and production output prediction platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="brand" style="margin-bottom:0;">
+      <div class="brand-icon">M</div>
+      <div class="brand-details">
+        <span class="brand-name">MFG.AI</span>
+        <span class="brand-subtitle">Output Intelligence</span>
+      </div>
+    </div>
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <a href="#dashboard" class="brand">
+        <div class="brand-icon">M</div>
+        <div class="brand-details">
+          <span class="brand-name">MFG.AI</span>
+          <span class="brand-subtitle">Output Intelligence</span>
+        </div>
+      </a>
+
+      <nav class="nav-section" aria-label="Main Navigation">
+        <button type="button" class="nav-item active" data-tab="dashboard">
+          <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </button>
+
+        <button type="button" class="nav-item" data-tab="prediction">
+          <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Prediction
+        </button>
+
+        <button type="button" class="nav-item" data-tab="insights">
+          <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Model Insights
+        </button>
+
+        <button type="button" class="nav-item" data-tab="history">
+          <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          History
+        </button>
+
+        <button type="button" class="nav-item" data-tab="settings" style="margin-top:auto;">
+          <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Settings
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="model-badge">
+          <span class="status-dot"></span>
+          <div>
+            <div style="font-weight:600;color:var(--text-primary);line-height:1.2;">Linear Regression</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Verified R² 0.9057</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="app-main">
+
+      <!-- ====================================================================
+           VIEW: DASHBOARD
+           ==================================================================== -->
+      <section id="view-dashboard" class="view-content active">
+        <!-- Hero Section -->
+        <div class="hero-section">
+          <div class="hero-text">
+            <div class="hero-tag">Production Intelligence Engine</div>
+            <h1 class="hero-title">Predict your manufacturing output.</h1>
+            <p class="hero-subtitle">Estimate production output using machine and process parameters.</p>
+          </div>
+          <div class="hero-metrics-strip">
+            <div class="metric-pill">
+              <span class="metric-pill-label">Model Accuracy</span>
+              <span class="metric-pill-value gold">90.57% R²</span>
+            </div>
+            <div class="metric-pill">
+              <span class="metric-pill-label">Mean Abs Error</span>
+              <span class="metric-pill-value">±2.72 PPH</span>
+            </div>
+            <div class="metric-pill">
+              <span class="metric-pill-label">Target Metric</span>
+              <span class="metric-pill-value">Parts / Hour</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verified Model Metrics Cards -->
+        <div class="metrics-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Model R²</span>
+              <span class="stat-badge">Test Score</span>
+            </div>
+            <div class="stat-value" style="color:var(--text-accent);">0.9057</div>
+            <div class="stat-desc">Explains 90.57% of output variance</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Mean Absolute Error</span>
+              <span class="stat-badge">MAE</span>
+            </div>
+            <div class="stat-value">2.72</div>
+            <div class="stat-desc">Parts / Hour average deviation</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Algorithm</span>
+              <span class="stat-badge">Scikit-Learn</span>
+            </div>
+            <div class="stat-value" style="font-size:1.45rem;">Linear Regression</div>
+            <div class="stat-desc">29 Processed features (OHE + Standardized)</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Dataset</span>
+              <span class="stat-badge">Validated</span>
+            </div>
+            <div class="stat-value">1,000</div>
+            <div class="stat-desc">800 Training / 200 Test rows (80/20)</div>
+          </div>
+        </div>
+
+        <!-- Central Prediction Section Embedded in Dashboard -->
+        <div class="prediction-workspace">
+          <!-- Prediction Form Card -->
+          <div class="prediction-card">
+            <div class="card-header">
+              <div class="card-tag">Interactive Simulation</div>
+              <h2 class="card-title">NEW PREDICTION</h2>
+              <p class="card-description">Enter the manufacturing parameters to estimate production output.</p>
+            </div>
+
+            <!-- Quick Presets -->
+            <div class="presets-container">
+              <span class="presets-label">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                Load Test Presets:
+              </span>
+              <div id="presets-chips" class="presets-chips">
+                <!-- Dynamically populated from verified test predictions -->
+              </div>
+            </div>
+
+            <form id="prediction-form" novalidate>
+              <!-- 1. Machine Parameters -->
+              <div class="form-group-section">
+                <div class="group-title">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+                  Machine Parameters
+                </div>
+                <div class="fields-grid">
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-machine-type">
+                      Machine Type <span class="field-unit">Class</span>
+                    </label>
+                    <div class="input-container">
+                      <select id="inp-machine-type" name="Machine_Type" class="form-select" required>
+                        <option value="Type_A">Type_A (High Precision)</option>
+                        <option value="Type_B">Type_B (Standard Duty)</option>
+                        <option value="Type_C">Type_C (Heavy Duty)</option>
+                      </select>
+                    </div>
+                    <div id="err-Machine_Type" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-machine-age">
+                      Machine Age <span class="field-unit">Years</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-machine-age" name="Machine_Age" type="number" step="0.1" min="1" max="15" class="form-input" required>
+                    </div>
+                    <div id="err-Machine_Age" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-maintenance-hours">
+                      Maintenance Hours <span class="field-unit">Hours</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-maintenance-hours" name="Maintenance_Hours" type="number" step="1" min="20" max="500" class="form-input" required>
+                    </div>
+                    <div id="err-Maintenance_Hours" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-machine-utilization">
+                      Machine Utilization <span class="field-unit">0.0 – 1.0</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-machine-utilization" name="Machine_Utilization" type="number" step="0.001" min="0" max="1" class="form-input" required>
+                    </div>
+                    <div id="err-Machine_Utilization" class="field-error-msg"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Process & Injection Parameters -->
+              <div class="form-group-section">
+                <div class="group-title">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                  Process Parameters
+                </div>
+                <div class="fields-grid">
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-injection-temp">
+                      Injection Temperature <span class="field-unit">°C</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-injection-temp" name="Injection_Temperature" type="number" step="0.1" min="150" max="350" class="form-input" required>
+                    </div>
+                    <div id="err-Injection_Temperature" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-injection-pressure">
+                      Injection Pressure <span class="field-unit">bar</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-injection-pressure" name="Injection_Pressure" type="number" step="0.1" min="50" max="200" class="form-input" required>
+                    </div>
+                    <div id="err-Injection_Pressure" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-cycle-time">
+                      Cycle Time <span class="field-unit">Seconds</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-cycle-time" name="Cycle_Time" type="number" step="0.1" min="10" max="100" class="form-input" required>
+                    </div>
+                    <div id="err-Cycle_Time" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-cooling-time">
+                      Cooling Time <span class="field-unit">Seconds</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-cooling-time" name="Cooling_Time" type="number" step="0.1" min="5" max="30" class="form-input" required>
+                    </div>
+                    <div id="err-Cooling_Time" class="field-error-msg"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Material & Environmental Conditions -->
+              <div class="form-group-section">
+                <div class="group-title">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+                  Material & Environment
+                </div>
+                <div class="fields-grid">
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-material-grade">
+                      Material Grade <span class="field-unit">Tier</span>
+                    </label>
+                    <div class="input-container">
+                      <select id="inp-material-grade" name="Material_Grade" class="form-select" required>
+                        <option value="Standard">Standard</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Economy">Economy</option>
+                      </select>
+                    </div>
+                    <div id="err-Material_Grade" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-material-viscosity">
+                      Material Viscosity <span class="field-unit">cP</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-material-viscosity" name="Material_Viscosity" type="number" step="0.1" min="100" max="1000" class="form-input" required>
+                    </div>
+                    <div id="err-Material_Viscosity" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-ambient-temp">
+                      Ambient Temperature <span class="field-unit">°C</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-ambient-temp" name="Ambient_Temperature" type="number" step="0.1" min="15" max="35" class="form-input" required>
+                    </div>
+                    <div id="err-Ambient_Temperature" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-operator-exp">
+                      Operator Experience <span class="field-unit">Months</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-operator-exp" name="Operator_Experience" type="number" step="0.1" min="1" max="120" class="form-input" required>
+                    </div>
+                    <div id="err-Operator_Experience" class="field-error-msg"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Operating Context & Derived Metrics -->
+              <div class="form-group-section">
+                <div class="group-title">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Operational Schedule & Derived Features
+                </div>
+
+                <div class="derived-sync-box">
+                  <label class="sync-toggle-label">
+                    <input type="checkbox" id="auto-sync-derived" checked>
+                    <span>Auto-calculate thermodynamic ratios & total cycle from process inputs</span>
+                  </label>
+                  <span style="font-size:0.75rem;color:var(--text-accent);">Recommended</span>
+                </div>
+
+                <div class="fields-grid">
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-shift">
+                      Operating Shift <span class="field-unit">Period</span>
+                    </label>
+                    <div class="input-container">
+                      <select id="inp-shift" name="Shift" class="form-select" required>
+                        <option value="Day">Day Shift</option>
+                        <option value="Evening">Evening Shift</option>
+                        <option value="Night">Night Shift</option>
+                      </select>
+                    </div>
+                    <div id="err-Shift" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-day-of-week">
+                      Day of Week <span class="field-unit">Calendar</span>
+                    </label>
+                    <div class="input-container">
+                      <select id="inp-day-of-week" name="Day_of_Week" class="form-select" required>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                      </select>
+                    </div>
+                    <div id="err-Day_of_Week" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-efficiency-score">
+                      Efficiency Score <span class="field-unit">0.01 – 0.85</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-efficiency-score" name="Efficiency_Score" type="number" step="0.001" min="0" max="1" class="form-input" required>
+                    </div>
+                    <div id="err-Efficiency_Score" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-temp-press-ratio">
+                      Temp / Pressure Ratio <span class="field-unit">Ratio</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-temp-press-ratio" name="Temperature_Pressure_Ratio" type="number" step="0.001" class="form-input" readonly required>
+                    </div>
+                    <div id="err-Temperature_Pressure_Ratio" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <label class="field-label" for="inp-total-cycle-time">
+                      Total Cycle Time <span class="field-unit">Seconds</span>
+                    </label>
+                    <div class="input-container">
+                      <input id="inp-total-cycle-time" name="Total_Cycle_Time" type="number" step="0.1" class="form-input" readonly required>
+                    </div>
+                    <div id="err-Total_Cycle_Time" class="field-error-msg"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="form-actions">
+                <button type="submit" id="btn-predict" class="btn-predict">
+                  Predict Output <span class="arrow">→</span>
+                </button>
+                <button type="button" id="btn-reset" class="btn-reset">
+                  Reset
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Prediction Result Column -->
+          <div class="result-column">
+            <div id="prediction-result-card" class="result-card">
+              <!-- State 1: Empty State -->
+              <div id="state-empty" class="state-container active">
+                <div class="empty-state">
+                  <div class="empty-state-icon">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  </div>
+                  <h3 class="empty-state-title">Ready for Parameters</h3>
+                  <p class="empty-state-text">Configure the manufacturing inputs on the left or select a preset to evaluate predicted parts per hour.</p>
+                </div>
+              </div>
+
+              <!-- State 2: Loading State -->
+              <div id="state-loading" class="state-container">
+                <div class="loading-state">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-pulse-text">Computing Output Estimate</div>
+                  <div class="loading-pulse-sub">Transforming 17 features & applying standardized linear regression coefficients...</div>
+                </div>
+              </div>
+
+              <!-- State 3: Successful Prediction State -->
+              <div id="state-success" class="state-container">
+                <div class="success-state">
+                  <div class="output-header">
+                    <span class="output-label">PREDICTED OUTPUT</span>
+                    <span id="output-badge" class="output-badge nominal">Nominal Run</span>
+                  </div>
+
+                  <div class="output-value-container">
+                    <div class="output-number">
+                      <span id="output-value">--</span>
+                      <span class="output-unit">Parts / Hour</span>
+                    </div>
+                  </div>
+
+                  <div id="output-delta" class="output-delta-bar">
+                    <!-- Populated dynamically -->
+                  </div>
+
+                  <div class="output-details-list" id="output-details">
+                    <!-- Parameter pills -->
+                  </div>
+
+                  <div class="error-margin-banner">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <span>Evaluated via <strong id="output-source">Linear Regression</strong> (MAE ±2.72 PPH)</span>
+                  </div>
+
+                  <div id="fallback-notice" class="notice-banner" style="display:none;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span id="fallback-notice-text"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- State 4: API Error State -->
+              <div id="state-error" class="state-container">
+                <div class="error-state">
+                  <div class="error-state-title">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span id="error-title">API Connection Notice</span>
+                  </div>
+                  <p id="error-message" class="error-state-message">Failed to connect to backend endpoint.</p>
+                  <div class="error-actions">
+                    <button type="button" id="btn-retry-api" class="btn-retry">Retry API</button>
+                    <button type="button" id="btn-fallback-eval" class="btn-fallback">Evaluate Locally</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Insight Callout -->
+            <div class="stat-card" style="padding:18px 20px;">
+              <div class="stat-header" style="margin-bottom:8px;">
+                <span class="stat-label">Model Throughput Driver</span>
+                <span class="stat-badge gold" style="color:var(--text-accent);">Top Impact</span>
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.4;">
+                <strong style="color:var(--text-primary);">Total Cycle Time</strong> exhibits the highest single impact on throughput with a coefficient of <strong>-10.05</strong>. Reducing combined cycle and cooling time yields the greatest production gain.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW: DETAILED PREDICTION CONSOLE
+           ==================================================================== -->
+      <section id="view-prediction" class="view-content">
+        <div class="hero-section" style="margin-bottom:24px;">
+          <div class="hero-text">
+            <div class="hero-tag">Engineering Console</div>
+            <h1 class="hero-title">Parameter Tuning & Prediction</h1>
+            <p class="hero-subtitle">Adjust equipment tolerances, materials, and operating conditions for fine-grained simulation.</p>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius-xl);padding:24px;margin-bottom:28px;">
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--text-primary);">Feature Importance Overview</h3>
+          <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:18px;">
+            The model was trained on 800 industrial samples with 29 processed features. Coefficients reflect standardized impact on Parts Per Hour.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <div class="metric-pill"><span class="metric-pill-label">Total Cycle Time</span><span class="metric-pill-value" style="color:#f87171;">-10.05 Coef</span></div>
+            <div class="metric-pill"><span class="metric-pill-label">Efficiency Score</span><span class="metric-pill-value gold">+2.88 Coef</span></div>
+            <div class="metric-pill"><span class="metric-pill-label">Cooling Time</span><span class="metric-pill-value gold">+2.67 Coef</span></div>
+            <div class="metric-pill"><span class="metric-pill-label">Injection Temp</span><span class="metric-pill-value gold">+2.30 Coef</span></div>
+            <div class="metric-pill"><span class="metric-pill-label">Machine Age</span><span class="metric-pill-value" style="color:#f87171;">-2.20 Coef</span></div>
+            <div class="metric-pill"><span class="metric-pill-label">Machine Type A</span><span class="metric-pill-value gold">+2.12 Coef</span></div>
+          </div>
+        </div>
+
+        <div style="text-align:center;padding:16px;">
+          <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">Use the main prediction console on the Dashboard to execute runs.</p>
+          <button type="button" class="btn-predict" style="max-width:320px;margin:0 auto;" data-navigate="dashboard">
+            Back to Prediction Console →
+          </button>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW: MODEL INSIGHTS & EVALUATION FIGURES
+           ==================================================================== -->
+      <section id="view-insights" class="view-content">
+        <div class="insights-header">
+          <div class="hero-tag">Empirical Verification</div>
+          <h1 class="hero-title">Model Insights & Evaluation</h1>
+          <p class="hero-subtitle">Verified performance metrics, benchmark comparisons, and evaluation plots from model training (M3).</p>
+        </div>
+
+        <div class="insights-grid">
+          <!-- Benchmark Models Comparison -->
+          <div class="insight-card">
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:4px;color:var(--text-primary);">Algorithm Benchmarks</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:14px;">Evaluated on the exact 20% hold-out test set (200 rows) with random state 42.</p>
+            <div class="benchmark-table-wrapper">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th>MAE</th>
+                    <th>RMSE</th>
+                    <th>MSE</th>
+                    <th>R² Score</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="benchmark-table-body">
+                  <!-- Dynamically populated from results/metrics/model_metrics.csv -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Residual Summary Card -->
+          <div class="insight-card">
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:4px;color:var(--text-primary);">Residual Distribution Statistics</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:14px;">Summary of test set prediction residuals (Actual − Predicted).</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+              <div class="metric-pill">
+                <span class="metric-pill-label">Mean Residual</span>
+                <span class="metric-pill-value">-0.485</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-pill-label">Residual Std Dev</span>
+                <span class="metric-pill-value">3.474</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-pill-label">Min Residual (Under-pred)</span>
+                <span class="metric-pill-value" style="color:#f87171;">-16.64</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-pill-label">Max Residual (Over-pred)</span>
+                <span class="metric-pill-value" style="color:var(--text-accent);">+8.72</span>
+              </div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.4;">
+              Source: <code>results/metrics/residual_summary.csv</code>. The residual mean is close to zero, demonstrating low systematic bias across the operational range.
+            </p>
+          </div>
+
+          <!-- Feature Importance / Coefficients Ranking -->
+          <div class="insight-card full-width">
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px;">
+              <div>
+                <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:4px;color:var(--text-primary);">Trained Feature Coefficients</h3>
+                <p style="font-size:0.85rem;color:var(--text-secondary);">
+                  All 29 standardized model coefficients from <code>linear_regression_coefficients.csv</code>. Positive values (gold) increase throughput; negative values (sage) decrease throughput.
+                </p>
+              </div>
+              <span class="stat-badge" style="background:var(--accent-gold-bg);color:var(--text-accent);">29 Features</span>
+            </div>
+            <div id="coef-bars-container" class="coef-bars-container">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Real Evaluation Figures Gallery -->
+          <div class="insight-card full-width">
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:4px;color:var(--text-primary);">Evaluation Figures</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);">Direct visual evidence generated by project notebook <code>03_model_training.ipynb</code>. Click any figure to enlarge.</p>
+
+            <div class="figures-gallery">
+              <!-- Figure 1 -->
+              <div class="figure-item">
+                <div class="figure-image-wrapper">
+                  <img src="../results/figures/actual_vs_predicted_linear_regression.png" alt="Actual vs Predicted Linear Regression" onerror="this.src='results/figures/actual_vs_predicted_linear_regression.png'">
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-title">Actual vs. Predicted Output</div>
+                  <div class="figure-sub">Tight clustering around diagonal 45° reference line (R² = 0.9057).</div>
+                </div>
+              </div>
+
+              <!-- Figure 2 -->
+              <div class="figure-item">
+                <div class="figure-image-wrapper">
+                  <img src="../results/figures/residuals_vs_predicted_linear_regression.png" alt="Residuals vs Predicted Linear Regression" onerror="this.src='results/figures/residuals_vs_predicted_linear_regression.png'">
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-title">Residuals vs. Predicted</div>
+                  <div class="figure-sub">Homoscedasticity check; errors distributed symmetrically around zero.</div>
+                </div>
+              </div>
+
+              <!-- Figure 3 -->
+              <div class="figure-item">
+                <div class="figure-image-wrapper">
+                  <img src="../results/figures/residual_distribution_linear_regression.png" alt="Residual Distribution Linear Regression" onerror="this.src='results/figures/residual_distribution_linear_regression.png'">
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-title">Residual Distribution</div>
+                  <div class="figure-sub">Bell-shaped normal distribution centered near zero (Std = 3.47).</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW: PREDICTION HISTORY
+           ==================================================================== -->
+      <section id="view-history" class="view-content">
+        <div class="history-header">
+          <div>
+            <div class="hero-tag">Session Audit Log</div>
+            <h1 class="hero-title">Prediction History</h1>
+            <p class="hero-subtitle">Transient frontend session log of estimates made during this session.</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button type="button" id="btn-export-history" class="btn-secondary">Export to CSV</button>
+            <button type="button" id="btn-clear-history" class="btn-secondary" style="color:#f87171;">Clear Log</button>
+          </div>
+        </div>
+
+        <div class="history-card">
+          <div class="benchmark-table-wrapper">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Machine & Shift</th>
+                  <th>Total Cycle</th>
+                  <th>Efficiency</th>
+                  <th>Material</th>
+                  <th>Predicted Output</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+            <div id="history-empty-msg" style="text-align:center;padding:40px;color:var(--text-muted);display:none;">
+              No predictions recorded in this session yet. Run a prediction from the Dashboard to record data here.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW: SETTINGS & API CONTRACT
+           ==================================================================== -->
+      <section id="view-settings" class="view-content">
+        <div class="hero-section" style="margin-bottom:24px;">
+          <div class="hero-text">
+            <div class="hero-tag">Integration & Gateway</div>
+            <h1 class="hero-title">System Settings & API Contract</h1>
+            <p class="hero-subtitle">Configure backend connectivity or view the exact REST API contract consumed by this interface.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Connection Settings -->
+          <div class="settings-card">
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:6px;color:var(--text-primary);">API Gateway Configuration</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:20px;">Configure the target backend URL for live model inference.</p>
+
+            <div class="field-wrapper" style="margin-bottom:18px;">
+              <label class="field-label" for="setting-api-endpoint">Target Endpoint URL</label>
+              <input id="setting-api-endpoint" type="text" class="form-input" placeholder="http://127.0.0.1:8000/api/predict">
+            </div>
+
+            <div class="field-wrapper" style="margin-bottom:22px;">
+              <label class="field-label" for="setting-api-mode">Execution Mode</label>
+              <select id="setting-api-mode" class="form-select">
+                <option value="auto">Auto (Attempt Live API, graceful fallback to local model)</option>
+                <option value="api">API Only (Strictly require live backend)</option>
+                <option value="local">Embedded Model Engine Only (Offline exact evaluation)</option>
+              </select>
+            </div>
+
+            <button type="button" id="btn-save-settings" class="btn-predict" style="padding:12px 24px;font-size:0.95rem;">
+              Save Configuration
+            </button>
+          </div>
+
+          <!-- API Contract Documentation -->
+          <div class="settings-card">
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:6px;color:var(--text-primary);">Expected API Contract</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;">
+              When the backend engineer implements the M4 deployment server, expose this endpoint:
+            </p>
+
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-accent);margin-bottom:6px;">HTTP POST /api/predict</div>
+            <div class="code-snippet">{
+  "Machine_Type": "Type_A",
+  "Machine_Age": 7.9,
+  "Maintenance_Hours": 50,
+  "Machine_Utilization": 0.36,
+  "Injection_Temperature": 215.3,
+  "Injection_Pressure": 116.0,
+  "Cycle_Time": 36.8,
+  "Cooling_Time": 11.9,
+  "Material_Grade": "Standard",
+  "Material_Viscosity": 242.7,
+  "Ambient_Temperature": 22.9,
+  "Shift": "Day",
+  "Day_of_Week": "Wednesday",
+  "Operator_Experience": 22.1,
+  "Efficiency_Score": 0.14,
+  "Temperature_Pressure_Ratio": 1.85,
+  "Total_Cycle_Time": 48.7
+}</div>
+
+            <div style="font-size:0.8rem;font-weight:700;color:var(--color-success);margin:14px 0 6px;">Response (200 OK):</div>
+            <div class="code-snippet">{
+  "predicted_parts_per_hour": 28.45,
+  "unit": "Parts / Hour",
+  "model": "Linear Regression"
+}</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Lightbox Modal for Figures -->
+  <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true">
+    <div class="lightbox-content">
+      <button id="lightbox-close" class="lightbox-close" aria-label="Close dialog">&times;</button>
+      <img id="lightbox-img" class="lightbox-img" src="" alt="Enlarged Figure">
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/model-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

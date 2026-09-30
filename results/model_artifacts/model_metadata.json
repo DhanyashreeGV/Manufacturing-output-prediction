@@ -1,0 +1,35 @@
+{
+  "target": "Parts_Per_Hour",
+  "model": "LinearRegression",
+  "test_size": 0.2,
+  "random_state": 42,
+  "numerical_features": [
+    "Injection_Temperature",
+    "Injection_Pressure",
+    "Cycle_Time",
+    "Cooling_Time",
+    "Material_Viscosity",
+    "Ambient_Temperature",
+    "Machine_Age",
+    "Operator_Experience",
+    "Maintenance_Hours",
+    "Temperature_Pressure_Ratio",
+    "Total_Cycle_Time",
+    "Efficiency_Score",
+    "Machine_Utilization"
+  ],
+  "categorical_features": [
+    "Shift",
+    "Machine_Type",
+    "Material_Grade",
+    "Day_of_Week"
+  ],
+  "timestamp_handling": "Dropped",
+  "numerical_imputation": "Median",
+  "categorical_imputation": "Most frequent",
+  "categorical_encoding": "OneHotEncoder(handle_unknown='ignore')",
+  "numerical_scaling": "StandardScaler",
+  "training_rows": 800,
+  "testing_rows": 200,
+  "processed_feature_count": 29
+}
